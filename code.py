@@ -35,10 +35,19 @@ master_df = pd.concat(frames, ignore_index=True)
 print(master_df)
 print(master_df.columns)
 
-
 sf = StyleFrame(master_df)
-sf.apply_style_by_indexes(indexes_to_style=sf[sf['note'] < 3],
-                          cols_to_style=['Nom'],
+# applying color for student with 1
+sf.apply_style_by_indexes(indexes_to_style=sf[(sf['note'] <= 1)],
+                          cols_to_style=['Nom', 'Prenom', 'note'],
                           styler_obj=Styler(bg_color='green', bold=True, font_size=10))
+# applying color for student with 2
+sf.apply_style_by_indexes(indexes_to_style=sf[(sf['note'] > 1) & (sf['note'] < 3)],
+                          cols_to_style=['Nom', 'Prenom', 'note'],
+                          styler_obj=Styler(bg_color='yellow', bold=True, font_size=10))
+
+# applying color for student with 3
+sf.apply_style_by_indexes(indexes_to_style=sf[(sf['note'] >= 3)],
+                          cols_to_style=['Nom', 'Prenom', 'note'],
+                          styler_obj=Styler(bg_color='red', bold=True, font_size=10))
 
 sf.to_excel('master_df.xlsx').save()
